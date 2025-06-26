@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../api/axiosClient";
 import "./Home.css";
+import { FormSelect } from "react-bootstrap";
 
 const Home = () => {
   // State for full list of products from API
@@ -65,6 +66,10 @@ const Home = () => {
     event.target.src = "/images/placeholder.jpeg";
   };
 
+  const handleDropDownChange = (event) => {
+    handleCategoryFilter(event.target.value);
+  };
+
   // show loading message while fetching data
   if (loading) {
     return <div className="loading-message">Loading products...</div>;
@@ -79,25 +84,19 @@ const Home = () => {
       {/* Left Hand Side: Filter sidebar */}
       <aside className="filter-sidebar">
         <h3>Categories</h3>
-        <button
-          className={selectedCategory === "all" ? "active" : ""}
-          onClick={() => handleCategoryFilter("all")}
+        <FormSelect
+          aria-label="Category filter"
+          className="category-dropdown"
+          value={selectedCategory}
+          onChange={handleDropDownChange}
         >
-          All Products
-        </button>
-        {categories.map((category) => (
-          <button
-            key={category.categoryId}
-            className={
-              Number(selectedCategory) === Number(category.categoryId)
-                ? "active"
-                : ""
-            }
-            onClick={() => handleCategoryFilter(category.categoryId)}
-          >
-            {category.name}
-          </button>
-        ))}
+          <option value="all">All Products</option>
+          {categories.map((category) => (
+            <option key={category.categoryId} value={category.categoryId}>
+              {category.name}
+            </option>
+          ))}
+        </FormSelect>
       </aside>
 
       {/* Right Hand Side: Product Grid */}
@@ -110,7 +109,7 @@ const Home = () => {
               : `/images/products/${product.imageUrl}`;
 
             return (
-              <div key={product.id} className="product-card">
+              <div key={product.productId} className="product-card">
                 <img
                   src={imageUrl}
                   alt={product.name}
