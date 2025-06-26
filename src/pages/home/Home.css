@@ -1,0 +1,99 @@
+/* Main container for 2-column layout */
+.home-container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Filter Sidebar */
+.filter-sidebar{
+    /* sidebar stays at a fixed width */
+    flex: 0 0 220px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    /* sidebar only as tall as its content */
+    height: fit-content;
+}
+
+.filter-sidebar h3{
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+/* Category Filter Button */
+.filter-sidebar button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border: none;
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s, color 0.2s;
+    border: 1px solid #ddd;
+}
+
+.filter-sidebar button:hover{
+    background-color: #e9ecef;
+}
+
+.filter-sidebar button.active{
+    background-color: #0d6efd;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #0d6efd;
+}
+
+/* Product Grid */
+.product-grid {
+    /* grow to take up all remaining space */
+    flex-grow: 1;
+    display: grid;
+    /* create as many columns as can fit, min width 250px, 1fr to grow equally */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.product-card{
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    /* to make sure image corners are rounded with the card */
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0, 0, 0.1);
+}
+
+.product-image{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.product-info{
+    padding: 15px;
+}
+
+.product-name{
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.product-price{
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
