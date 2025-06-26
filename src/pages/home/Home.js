@@ -62,7 +62,7 @@ const Home = () => {
     // prevent infinite loop if the placeholder itself is broken
     event.target.onerror = null;
     // set the image source to safe placeholder
-    event.target.src = "/images/logo.png";
+    event.target.src = "/images/placeholder.jpeg";
   };
 
   // show loading message while fetching data

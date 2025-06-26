@@ -34,7 +34,7 @@ const NavbarComponent = () => {
                                     Profile
                                 </NavLink>
 
-                                <NavLink onClick={logout} style={{cursor: `pointer`}}>
+                                <NavLink onClick={logout} href="#" className="nav-link">
                                     Logout
                                 </NavLink>
                             </>
