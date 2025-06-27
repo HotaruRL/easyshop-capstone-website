@@ -20,6 +20,12 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  //State for price filtering
+  const [priceRange, setPriceRange] = useState({min: 0, max: 1500});
+  //user's currently selected min and max price
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(1500);
+
   // Fetch all needed data when the component first loads
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -30,12 +36,21 @@ const Home = () => {
           axiosClient.get("/categories"),
         ]);
 
-        console.log("A single product object:", productsResponse.data[0]);
-        console.log("A single category object:", categoriesResponse.data[0]);
-
-        setProducts(productsResponse.data);
-        setFilteredProducts(productsResponse.data);
+        const allProducts = productsResponse.data;
+        setProducts(allProducts);
         setCategories(categoriesResponse.data);
+
+        if(allProducts.length>0){
+          // find min and max prices from the product list
+          const prices = allProducts.map(p => p.price);
+          const min = Math.min(...prices);
+          const max = Math.max(...prices);
+
+          // set all pricce state at once
+          setPriceRange({min, max});
+          setMinPrice(min);
+          setMaxPrice(max);
+        }
       } catch (err) {
         console.error("Failed to fetch initial data", err);
         setError("Could not load data. Please try again later.");
@@ -46,6 +61,26 @@ const Home = () => {
 
     fetchInitialData();
   }, []); // [] run only once at start
+
+  // to combined filters
+  useEffect(() => {
+    let result = products; // start with full list
+
+    // apply category filter
+    if (selectedCategory.value != 'all'){
+      result = result.filter(
+        (product) => Number(product.categoryId) === Number(selectedCategory.value)
+      );
+    }
+
+    // apply price filter
+    result = result.filter(
+        (product) => product.price >= minPrice && product.price <= maxPrice
+      );
+
+      // set final filtered list to be displayed
+      setFilteredProducts(result);
+  }, [selectedCategory, minPrice, maxPrice, products]) // re-runs if any of these change
 
   // handle clicking on category filter
   const handleCategoryFilter = (selectedOption) => {
@@ -124,6 +159,34 @@ const Home = () => {
           onChange={handleCategoryFilter}
           styles={customSelectStyles}
         ></Select>
+
+        <div className="price-filter-group">
+          <div className="price-filter">
+            <label htmlFor="minPrice">Min Price: <span>${minPrice}</span></label>
+            <input
+              type="range"
+              id="minPrice"
+              name="minPrice"
+              min={priceRange.min}
+              max={priceRange.max}
+              value={minPrice}
+              onChange={(e) => setMinPrice(Number(e.target.value))}
+            />
+          </div>
+
+          <div className="price-filter">
+            <label htmlFor="maxPrice">Max Price: <span>${maxPrice}</span></label>
+            <input
+              type="range"
+              id="maxPrice"
+              name="maxPrice"
+              min={priceRange.min}
+              max={priceRange.max}
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+            />
+          </div>
+        </div>
       </aside>
 
       {/* Right Hand Side: Product Grid */}

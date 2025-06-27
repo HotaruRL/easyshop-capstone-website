@@ -23,6 +23,64 @@
   padding-bottom: 10px;
 }
 
+/* --- PRICE FILTER STYLES --- */
+.price-filter-group {
+    margin-top: 2rem; /* Space between category and price filters */
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+.price-filter {
+    margin-bottom: 1rem;
+}
+
+.price-filter label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--bs-secondary);
+}
+
+.price-filter label span {
+    font-weight: 600;
+    color: var(--bs-dark);
+}
+
+/* --- STYLING THE SLIDER INPUT --- */
+input[type="range"] {
+    -webkit-appearance: none; /* Hides the default slider appearance */
+    width: 100%;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Styling the slider thumb (the circle) for Chrome/Safari */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--bs-primary);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-top: -7px; /* Center the thumb on the track */
+}
+
+/* Styling the slider thumb for Firefox */
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--bs-primary);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
 /* Product Grid */
 .product-grid {
   /* grow to take up all remaining space */
