@@ -66,7 +66,7 @@
     width: 100%;
 }
 
-/* --- VISIT BUTTONS --- */
+/* --- CART BUTTONS --- */
 .visit-btn {
     padding: 0.8rem 1.5rem;
     border-radius: 3rem;
@@ -81,4 +81,6 @@
 .visit-btn:hover {
     transform: scale(1.03);
     box-shadow: 0 4px 15px hsla(342, 88%, 68%, 0.4);
+    background: linear-gradient(to right, hsl(0, 100%, 89%), hsl(342, 88%, 68%));
+    transition: all 0.4s ease-in-out;
 }

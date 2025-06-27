@@ -23,6 +23,7 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+
   // fetch current user's profile when the page loads
   useEffect(() => {
     const fetchProfile = async () => {
@@ -54,19 +55,30 @@ const Profile = () => {
     }));
   };
 
-  const handleUpdateProfile = async (event) => {
-    event.preventDefault();
-    setError("");
-    setSuccessMessage("");
+    const handleUpdateProfile = async (event) => {
+        // prevent the default page reload
+        event.preventDefault();
 
-    try {
-      await axiosClient.put("/profile", profileData);
-      setSuccessMessage("Profile updated successfully!");
-    } catch (err) {
-      console.error("Failed to update profile", err);
-      setError("Update failed. Please check your information and try again.");
-    }
-  };
+        // use reportValidity() on the form to check AND show errors
+        // if the form is invalid, this shows the UI popups and returns false
+        const isFormValid = event.currentTarget.reportValidity();
+
+        // if the form is not valid, stop right here
+        if (!isFormValid) {
+            return;
+        }
+
+        // this code will ONLY run if all fields are valid
+        setError('');
+        setSuccessMessage('');
+        try {
+            await axiosClient.put('/profile', profileData);
+            setSuccessMessage("Profile updated successfully!");
+        } catch (err) {
+            console.error("Failed to update profile:", err);
+            setError("Update failed. Please try again.");
+        }
+    };
 
   if (loading) {
     return <div className="loading-message">Loading your profile...</div>;
@@ -74,7 +86,7 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      <form onSubmit={handleUpdateProfile} className="profile-form">
+      <form onSubmit={handleUpdateProfile} className="profile-form" noValidate>
         <h2>Your Profile</h2>
 
         <div className="input-group">
@@ -107,6 +119,10 @@ const Profile = () => {
             placeholder="Enter your email"
             value={profileData.email || ""}
             onChange={handleInputChange}
+            //use regex pattern for validation
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            // show error message how to fix if bad input
+            title="Please enter a valid email address (e.g., user@example.com)"
           />
         </div>
 
@@ -126,9 +142,13 @@ const Profile = () => {
           <input
             type="tel"
             name="phone"
-            placeholder="Enter your phone number"
+            placeholder="e.g., 123-456-7890"
             value={profileData.phone || ""}
             onChange={handleInputChange}
+            //use regex pattern for validation
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            // show error message how to fix if bad input
+            title="Phone number must be in the format 123-456-7890"
           />
         </div>
 

@@ -1,0 +1,125 @@
+/* --- Main Container --- */
+/* This creates the centered card layout */
+.confirmation-container {
+    max-width: 600px;
+    margin: 4rem auto;
+    padding: 3rem;
+    background-color: #ffffff;
+    
+    /* Use the global theme variables from index.scss */
+    border-radius: var(--bs-border-radius);
+    box-shadow: var(--bs-box-shadow);
+    border: 1px solid #eee;
+
+    /* Center all content and create space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+
+/* --- Success Icon --- */
+/* This creates a green circle with a white checkmark inside using pure CSS */
+.icon-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #1a7431;
+    position: relative;
+    transform: scale(0); /* Start hidden */
+    /* Animate the icon popping in */
+    animation: pop-in 0.5s 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+/* The checkmark lines (created with pseudo-elements) */
+.success-icon::before,
+.success-icon::after {
+    content: '';
+    position: absolute;
+    background-color: white;
+    border-radius: 3px;
+}
+
+/* The shorter line of the checkmark */
+.success-icon::before {
+    width: 5px;
+    height: 25px;
+    left: 30px;
+    top: 38px;
+    transform: rotate(-45deg);
+}
+
+/* The longer line of the checkmark */
+.success-icon::after {
+    width: 5px;
+    height: 45px;
+    left: 45px;
+    top: 22px;
+    transform: rotate(45deg);
+}
+
+/* The pop-in animation for the icon */
+@keyframes pop-in {
+    to {
+        transform: scale(1);
+    }
+}
+
+
+/* --- Text Styling --- */
+.confirmation-container h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.confirmation-message {
+    font-size: 1.1rem;
+    color: var(--bs-secondary);
+    max-width: 80%; /* Keep the text from getting too wide */
+    margin-bottom: 1.5rem;
+}
+
+.order-id-message {
+    font-size: 1rem;
+    background-color: var(--bs-light);
+    padding: 0.75rem 1.25rem;
+    border-radius: 50px;
+    border: 1px solid #eee;
+}
+
+.order-id-message strong {
+    color: var(--bs-dark);
+    font-weight: 600;
+}
+
+
+/* --- Continue Shopping Button --- */
+.continue-shopping-btn {
+    display: inline-block; /* Make the <a> tag behave like a button */
+    margin-top: 2rem;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+    background-image: linear-gradient( to right, hsl(342, 88%, 68%), hsl(0, 100%, 89%) );
+    background-size: 200% auto;
+}
+
+.continue-shopping-btn:hover {
+    background-position: right center;
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px hsla(342, 88%, 68%, 0.4);
+}

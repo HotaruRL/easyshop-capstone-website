@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 
 const NavbarComponent = () => {
   const { user, logout } = useAuth();
+  const { cartItemCount } = useCart(); 
 
     return (
     <header className="main-header">
@@ -27,7 +29,9 @@ const NavbarComponent = () => {
         </ul>
       </nav>
 
-      <button className="visit-btn">My Cart</button>
+      <NavLink to="/cart" className="visit-btn">
+                Cart ({cartItemCount})
+      </NavLink>
     </header>
   );
 };

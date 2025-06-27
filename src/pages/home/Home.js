@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../api/axiosClient";
 import "./Home.css";
 import Select from "react-select";
+import { useCart } from "../../context/CartContext";
 
 const Home = () => {
+  const { addToCart } = useCart();
   // State for full list of products from API
   const [products, setProducts] = useState([]);
   // State for the products after filtering
@@ -21,7 +23,7 @@ const Home = () => {
   const [error, setError] = useState("");
 
   //State for price filtering
-  const [priceRange, setPriceRange] = useState({min: 0, max: 1500});
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1500 });
   //user's currently selected min and max price
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1500);
@@ -40,14 +42,14 @@ const Home = () => {
         setProducts(allProducts);
         setCategories(categoriesResponse.data);
 
-        if(allProducts.length>0){
+        if (allProducts.length > 0) {
           // find min and max prices from the product list
-          const prices = allProducts.map(p => p.price);
+          const prices = allProducts.map((p) => p.price);
           const min = Math.min(...prices);
           const max = Math.max(...prices);
 
           // set all pricce state at once
-          setPriceRange({min, max});
+          setPriceRange({ min, max });
           setMinPrice(min);
           setMaxPrice(max);
         }
@@ -67,33 +69,25 @@ const Home = () => {
     let result = products; // start with full list
 
     // apply category filter
-    if (selectedCategory.value != 'all'){
+    if (selectedCategory.value != "all") {
       result = result.filter(
-        (product) => Number(product.categoryId) === Number(selectedCategory.value)
+        (product) =>
+          Number(product.categoryId) === Number(selectedCategory.value)
       );
     }
 
     // apply price filter
     result = result.filter(
-        (product) => product.price >= minPrice && product.price <= maxPrice
-      );
+      (product) => product.price >= minPrice && product.price <= maxPrice
+    );
 
-      // set final filtered list to be displayed
-      setFilteredProducts(result);
-  }, [selectedCategory, minPrice, maxPrice, products]) // re-runs if any of these change
+    // set final filtered list to be displayed
+    setFilteredProducts(result);
+  }, [selectedCategory, minPrice, maxPrice, products]); // re-runs if any of these change
 
   // handle clicking on category filter
   const handleCategoryFilter = (selectedOption) => {
     setSelectedCategory(selectedOption);
-
-    if (selectedOption.value === "all") {
-      setFilteredProducts(products);
-    } else {
-      const newFilteredList = products.filter(
-        (product) => Number(product.categoryId) === Number(selectedOption.value)
-      );
-      setFilteredProducts(newFilteredList);
-    }
   };
 
   // handle broken images
@@ -151,7 +145,7 @@ const Home = () => {
     <div className="home-container">
       {/* Left Hand Side: Filter sidebar */}
       <aside className="filter-sidebar">
-        <h3>Categories</h3>
+        <h3>Filters</h3>
         <Select
           className="category-react-select"
           options={categoryOptions}
@@ -162,7 +156,9 @@ const Home = () => {
 
         <div className="price-filter-group">
           <div className="price-filter">
-            <label htmlFor="minPrice">Min Price: <span>${minPrice}</span></label>
+            <label htmlFor="minPrice">
+              Min Price: <span>${minPrice}</span>
+            </label>
             <input
               type="range"
               id="minPrice"
@@ -175,7 +171,9 @@ const Home = () => {
           </div>
 
           <div className="price-filter">
-            <label htmlFor="maxPrice">Max Price: <span>${maxPrice}</span></label>
+            <label htmlFor="maxPrice">
+              Max Price: <span>${maxPrice}</span>
+            </label>
             <input
               type="range"
               id="maxPrice"
@@ -200,15 +198,25 @@ const Home = () => {
 
             return (
               <div key={product.productId} className="product-card">
-                <img
-                  src={imageUrl}
-                  alt={product.name}
-                  className="product-image"
-                  onError={handleImageError}
-                />
-                <div className="product-info">
-                  <h4 className="product-name">{product.name}</h4>
-                  <p className="product-price">${product.price}</p>
+                <div className="card-content">
+                  <img
+                    src={imageUrl}
+                    alt={product.name}
+                    className="product-image"
+                    onError={handleImageError}
+                  />
+                  <div className="product-info">
+                    <h4 className="product-name">{product.name}</h4>
+                    <p className="product-price">${product.price}</p>
+                  </div>
+                </div>
+                <div className="card-button-wrapper">
+                  <button
+                    className="add-to-cart-btn"
+                    onClick={() => addToCart(product)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             );

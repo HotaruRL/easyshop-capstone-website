@@ -25,60 +25,60 @@
 
 /* --- PRICE FILTER STYLES --- */
 .price-filter-group {
-    margin-top: 2rem; /* Space between category and price filters */
-    border-top: 1px solid #eee;
-    padding-top: 1.5rem;
+  margin-top: 2rem; /* Space between category and price filters */
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
 }
 
 .price-filter {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .price-filter label {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    color: var(--bs-secondary);
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--bs-secondary);
 }
 
 .price-filter label span {
-    font-weight: 600;
-    color: var(--bs-dark);
+  font-weight: 600;
+  color: var(--bs-dark);
 }
 
 /* --- STYLING THE SLIDER INPUT --- */
 input[type="range"] {
-    -webkit-appearance: none; /* Hides the default slider appearance */
-    width: 100%;
-    height: 6px;
-    background: #e9ecef;
-    border-radius: 5px;
-    outline: none;
-    cursor: pointer;
+  -webkit-appearance: none; /* Hides the default slider appearance */
+  width: 100%;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
 }
 
 /* Styling the slider thumb (the circle) for Chrome/Safari */
 input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--bs-primary);
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    margin-top: -7px; /* Center the thumb on the track */
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--bs-primary);
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: -7px; /* Center the thumb on the track */
 }
 
 /* Styling the slider thumb for Firefox */
 input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--bs-primary);
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width: 20px;
+  height: 20px;
+  background: var(--bs-primary);
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Product Grid */
@@ -92,23 +92,24 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .product-card {
-  padding: 1.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: var(--bs-border-radius);
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  transition: all 0.4s ease-in-out;
-  background-color: white;
+  justify-content: space-between;
+}
+
+.card-content {
+  flex-grow: 1;
 }
 
 .product-card:hover {
-  border-color: transparent;
-  transform: translateY(-10px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
@@ -119,11 +120,13 @@ input[type="range"]::-moz-range-thumb {
 
 .product-info {
   padding: 15px;
+  text-align: center;
 }
 
 .product-name {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
+  color: var(--bs-dark);
   margin: 0 0 10px 0;
 }
 
@@ -132,4 +135,55 @@ input[type="range"]::-moz-range-thumb {
   font-weight: bold;
   color: #333;
   margin: 0;
+}
+
+.card-button-wrapper {
+  /* container for animation */
+  position: relative; /* crucial for positioning the ::before pseudo-element */
+  overflow: hidden; /* hides the color layer before it slides in */
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-top: 1px solid #eee;
+  background-color: transparent;
+  color: var(--bs-primary); /* Text starts with theme color */
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  /* ensure the text stays on top of the animation layer */
+  position: relative;
+  z-index: 1;
+  /* smooth transition for the text color change */
+  transition: color 0.4s ease-in-out;
+}
+
+.card-button-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%; /* starts with zero width (hidden on the left) */
+  height: 100%;
+
+  background: linear-gradient(to right, hsl(342, 88%, 68%), hsl(0, 100%, 89%));
+
+  /* animation layer is behind the button's text */
+  z-index: 0;
+
+  /* animation's transition */
+  transition: width 0.4s ease-in-out;
+}
+
+.card-button-wrapper:hover::before {
+  width: 100%; /* on hover, the color layer slides to fill the full width */
+}
+
+/* on hover, the button's text color changes to white */
+.card-button-wrapper:hover .add-to-cart-btn {
+  color: white;
 }
