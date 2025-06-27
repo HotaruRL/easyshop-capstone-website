@@ -1,86 +1,110 @@
 .profile-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 80vh;
-  background-color: #f4f7f6;
-  padding: 40px 20px;
+  padding: 4rem 2rem;
 }
 
 .profile-form {
   width: 100%;
-  max-width: 600px;
-  padding: 40px;
+  max-width: 700px;
+  padding: 2.5rem;
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  border-radius: var(--bs-border-radius);
+  box-shadow: var(--bs-box-shadow);
+  border: 1px solid #eee;
 }
 
 .profile-form h2 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
   font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+/* Add the signature gradient underline to the title */
+.profile-form h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to right, hsl(342, 88%, 68%), hsl(0, 100%, 89%));
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .input-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #555;
+  font-size: 0.9rem;
+  color: var(--bs-secondary);
 }
 
 .input-group input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: var(--bs-border-radius);
+  font-size: 1rem;
+  background-color: var(--bs-light);
+  color: var(--bs-body-color);
+  transition: all 0.2s ease-in-out;
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #0d6efd;
-  box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
+  border-color: var(--bs-primary);
+  box-shadow: var(--bs-form-select-focus-box-shadow);
 }
 
-.profile-form button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  background-color: #0d6efd;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 10px;
+.profile-form button[type="submit"] {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px; /* pill shape */
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1rem;
+    transition: all 0.3s ease-in-out;
+    background-image: linear-gradient(to right, hsl(342, 88%, 68%), hsl(0, 100%, 89%));
+    background-size: 200% auto; /* hover effect */
 }
 
-.profile-form button:hover {
-  background-color: #0b5ed7;
+.profile-form button[type="submit"]:hover {
+    background-position: right center;
+    transform: scale(1.02);
+    box-shadow: 0 5px 20px hsla(342, 88%, 68%, 0.4);
 }
 
 .success-message {
-  color: #198754;
-  text-align: center;
-  margin: 15px 0;
-  font-weight: 500;
+    color: #1a7431;
+    text-align: center;
+    padding: 0.75rem;
+    border: 1px solid #1a7431;
+    border-radius: var(--bs-border-radius);
+    background-color: hsla(145, 63%, 90%, 1);
+    margin: 1rem 0;
 }
 
 .error-message {
-  color: #dc3545;
-  text-align: center;
-  margin: 15px 0;
-  font-weight: 500;
+    color: #b3001b;
+    text-align: center;
+    padding: 0.75rem;
+    border: 1px solid #b3001b;
+    border-radius: var(--bs-border-radius);
+    background-color: hsla(351, 100%, 92%, 1);
+    margin: 1rem 0;
 }
 
 .loading-message {

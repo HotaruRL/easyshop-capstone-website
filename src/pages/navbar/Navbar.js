@@ -1,55 +1,35 @@
-import { Container, Navbar, NavbarBrand, Nav, NavbarToggle, NavbarCollapse } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import { useAuth } from "../../context/AuthContext";
 
 const NavbarComponent = () => {
+  const { user, logout } = useAuth();
 
-    const {user, logout} = useAuth();
+    return (
+    <header className="main-header">
+      <NavLink to="/" className="logo">Easy Shop</NavLink>
+      
+      <nav>
+        <ul className="nav-links">
+          <li><NavLink to="/">Home</NavLink></li>
+          
+          {user ? (
+            <>
+              <li><NavLink to="/profile">Profile</NavLink></li>
+              {user.role === "ROLE_ADMIN" && (
+                <li><NavLink to="/add-product">Add Product</NavLink></li>
+              )}
+              <li><button onClick={logout} className="logout-button">Logout</button></li>
+            </>
+          ) : (
+            <li><NavLink to="/login">Login</NavLink></li>
+          )}
+        </ul>
+      </nav>
 
-    return(
-        <>
-        <Navbar bg="primary" variant="dark" expand="lg">
-            <Container>
-                <NavbarBrand as={NavLink} to="/"><strong>Easy Shop</strong></NavbarBrand>
-                <NavbarToggle aria-controls="basic-navbar-nav" />
-                <NavbarCollapse id="basic-navbar-nav">
-                    {/* ml-auto to align it to the right side */}
-                    <Nav className="ms-auto">
-
-                        <NavLink as={NavLink} to="/" className="nav-link">Home</NavLink>
-
-                        {/* ADMIN-ONLY LINK */}
-                        {user && user.role === 'ROLE_ADMIN' && (
-                            <NavLink as={NavLink} to="/products" className="nav-link">
-                                Add Product
-                            </NavLink>
-                        )}
-
-                        {/* LOGGED IN vs. LOGGED OUT LOGIC */}
-                        {user ? (
-                            // if user logged in, show Profile and Logout
-                            <>
-                                <NavLink as={NavLink} to="/profile" className="nav-link">
-                                    Profile
-                                </NavLink>
-
-                                <NavLink onClick={logout} href="#" className="nav-link">
-                                    Logout
-                                </NavLink>
-                            </>
-                        ) : (
-                            // if no user logged in, show Login
-                            <NavLink as={NavLink} to="/login" className="nav-link">
-                                Login
-                            </NavLink>
-                        )}
-                    </Nav>
-                </NavbarCollapse>
-            </Container>
-        </Navbar>
-        </>
-    )
-}
+      <button className="visit-btn">My Cart</button>
+    </header>
+  );
+};
 
 export default NavbarComponent;

@@ -1,0 +1,84 @@
+// DEFINE YOUR THEME
+$my-primary: hsl(342, 88%, 55%);
+$my-secondary: hsl(210, 15%, 55%);
+$my-light: hsl(210, 20%, 98%);
+$my-dark: hsl(210, 10%, 25%);
+$my-font: 'Poppins', sans-serif;
+$my-radius: 6px;
+$my-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+
+$my-gradient: linear-gradient(to right, $my-primary, hsl(0 100% 89%));
+
+// CONFIGURE AND LOAD BOOTSTRAP
+@use "bootstrap/scss/bootstrap" with (
+
+  $primary:   $my-primary,
+  $secondary: $my-secondary,
+  $light:     $my-light,
+  $dark:      $my-dark,
+  $font-family-base: $my-font,
+  $border-radius:    $my-radius,
+  $box-shadow:       $my-shadow,
+  $body-bg:   $my-light,
+  $body-color: $my-dark,
+
+  $form-select-focus-box-shadow: 0 0 0 0.25rem rgba($my-primary, 0.25)
+);
+
+// APPLY GLOBAL STYLES & RESETS
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+// Global styles for links and lists
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+// heading font styles.
+h1, h2, h3, h4, h5, h6 {
+  font-family: $my-font;
+  font-weight: 700; 
+  line-height: 1.2;
+}
+
+h1 { font-size: 5.61rem; }
+h2 { font-size: 4.209rem; }
+h3 { font-size: 3.157rem; }
+h4 { font-size: 2.369rem; }
+h5 { font-size: 1.777rem; }
+h6 { font-size: 1.333rem; }
+
+// Since the header will be fixed, we must add padding to the body
+// to prevent the page content from being hidden underneath it.
+body {
+  padding-top: 7rem; // Adjust this value based on header's final height
+}
+
+// COMPONENT OVERRIDES
+.form-control:focus,
+.form-select:focus {
+  // Use primary theme color for the border on focus
+  border-color: $my-primary;
+  // The box-shadow uses the Bootstrap variable configured above.
+  // This creates the "glow" effect with theme color.
+  box-shadow: var(--bs-form-select-focus-box-shadow);
+}
+
+// b. Custom Buttons (if use <Button variant="primary">)
+// Ensures any Bootstrap buttons also use custom transitions
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+// c. Fix for the dropdown arrow color
+// The dropdown arrow is an SVG image embedded via CSS. We need to re-color it.
+.form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='#{$my-dark}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}

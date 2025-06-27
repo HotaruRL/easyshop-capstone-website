@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../api/axiosClient";
 import "./Home.css";
-import { FormSelect } from "react-bootstrap";
+import Select from "react-select";
 
 const Home = () => {
   // State for full list of products from API
@@ -11,7 +11,10 @@ const Home = () => {
   // State for list of categories for the sidebar
   const [categories, setCategories] = useState([]);
   // State to tract the currently selected category ID
-  const [selectedCategory, setSelectedCategory] = useState("all"); // 'all' is our default
+  const [selectedCategory, setSelectedCategory] = useState({
+    value: "all",
+    label: "All Products",
+  }); // 'all' is our default
 
   // State for loading and error messages
   const [loading, setLoading] = useState(true);
@@ -45,14 +48,14 @@ const Home = () => {
   }, []); // [] run only once at start
 
   // handle clicking on category filter
-  const handleCategoryFilter = (categoryId) => {
-    setSelectedCategory(categoryId);
+  const handleCategoryFilter = (selectedOption) => {
+    setSelectedCategory(selectedOption);
 
-    if (categoryId === "all") {
+    if (selectedOption.value === "all") {
       setFilteredProducts(products);
     } else {
       const newFilteredList = products.filter(
-        (product) => Number(product.categoryId) === Number(categoryId)
+        (product) => Number(product.categoryId) === Number(selectedOption.value)
       );
       setFilteredProducts(newFilteredList);
     }
@@ -66,8 +69,38 @@ const Home = () => {
     event.target.src = "/images/placeholder.jpeg";
   };
 
-  const handleDropDownChange = (event) => {
-    handleCategoryFilter(event.target.value);
+  const categoryOptions = [
+    { value: "all", label: "All Products" },
+    ...categories.map((category) => ({
+      value: category.categoryId,
+      label: category.name,
+    })),
+  ];
+
+  const customSelectStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "#fff",
+      borderColor: "#ddd",
+      borderRadius: "var(--bs-border-radius)",
+      padding: "0.35rem",
+      boxShadow: "none",
+      "&:hover": { borderColor: "var(--bs-primary)" },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? "var(--bs-primary)"
+        : state.isFocused
+        ? "#f8f9fa"
+        : "white",
+      color: state.isSelected ? "white" : "var(--bs-body-color)",
+      cursor: "pointer",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "var(--bs-body-color)",
+    }),
   };
 
   // show loading message while fetching data
@@ -84,19 +117,13 @@ const Home = () => {
       {/* Left Hand Side: Filter sidebar */}
       <aside className="filter-sidebar">
         <h3>Categories</h3>
-        <FormSelect
-          aria-label="Category filter"
-          className="category-dropdown"
+        <Select
+          className="category-react-select"
+          options={categoryOptions}
           value={selectedCategory}
-          onChange={handleDropDownChange}
-        >
-          <option value="all">All Products</option>
-          {categories.map((category) => (
-            <option key={category.categoryId} value={category.categoryId}>
-              {category.name}
-            </option>
-          ))}
-        </FormSelect>
+          onChange={handleCategoryFilter}
+          styles={customSelectStyles}
+        ></Select>
       </aside>
 
       {/* Right Hand Side: Product Grid */}

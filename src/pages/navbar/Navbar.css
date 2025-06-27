@@ -1,20 +1,84 @@
-
-.navbar{
-    background-color: #343a40;
+.main-header {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1200px;
+    background-color: hsla(0, 0%, 0%, 0.8);
+    backdrop-filter: blur(8px);
+    color: hsl(0, 0%, 98%);
+    padding: 0.5rem 1.5rem;
+    border-radius: 3rem;
+    z-index: 1000;
 }
 
-.navbar .navbar-brand{
-    color: #fff;
+/* --- LOGO --- */
+.logo {
+    color: hsl(0, 0%, 98%);
+    font-size: 1.3rem;
+    font-weight: 600;
+    transition: all 0.4s ease-in-out;
+}
+.logo:hover {
+    color: hsl(342, 88%, 68%);
+    transform: scale(1.05);
 }
 
-.navbar .nav-link {
-    color: #fff !important;
-    text-decoration: none !important;
-    margin-right: 20px;
+/* --- NAVIGATION LINKS --- */
+.nav-links {
+    display: flex;
+    gap: 2rem;
 }
 
-@media (max-width: 576px){
-    .navbar .nav-link{
-        margin-right: 0;
-    }
+.nav-links li a,
+.nav-links .logout-button { /* Style the logout button like a link */
+    position: relative;
+    color: hsl(0, 0%, 98%);
+    font-weight: 300;
+    padding-bottom: 5px; /* Add padding for the underline to have space */
+    /* For the logout button */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem; /* Match link font size */
+}
+
+.nav-links li a::after,
+.nav-links .logout-button::after { /* The underline effect */
+    content: '';
+    position: absolute;
+    width: 0;
+    left: 0;
+    height: 2px; /* A thinner line is more subtle */
+    bottom: 0;
+    border-radius: 1rem;
+    transition: all 0.4s ease-in-out;
+    background: linear-gradient(to right, hsl(342, 88%, 68%), hsl(0, 100%, 89%));
+}
+
+.nav-links li a:hover::after,
+.nav-links li a.active::after, /* Make the active link underlined */
+.nav-links .logout-button:hover::after {
+    width: 100%;
+}
+
+/* --- VISIT BUTTONS --- */
+.visit-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 3rem;
+    border: none;
+    font-weight: 500;
+    font-size: 1rem;
+    color: hsl(0, 0%, 98%);
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+    background: linear-gradient(to right, hsl(342, 88%, 68%), hsl(0, 100%, 89%));
+}
+.visit-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px hsla(342, 88%, 68%, 0.4);
 }
