@@ -1,70 +1,189 @@
-# Getting Started with Create React App
+# 🛍️ Easy Shop Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the Easy Shop Frontend! This is a dynamic and modern e-commerce web application built with React. It provides a complete user experience, from browsing and filtering products to a secure checkout process. Whether you're a customer looking to shop or an admin managing the store, this application has you covered.
 
-## Available Scripts
+This repository contains the complete frontend code. It's designed to be clean, modular, and easy to understand, making it a great starting point for your own e-commerce projects or for learning advanced React concepts like global state management and protected routing.
 
-In the project directory, you can run:
+## 🔗 Companion API
 
-### `npm start`
+This frontend application is designed to work with a specific backend API that handles all the business logic, data storage, and user authentication. To run this project locally, you'll first need to set up and run its companion API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+You can find the backend project and its setup instructions here:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+👉 **Easy Shop E-commerce API:** [https://github.com/HotaruRL/easyshop-ecommerce-api-capstone](https://github.com/HotaruRL/easyshop-ecommerce-api-capstone)
 
-### `npm test`
+Make sure the API server is running before you start the frontend application.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📝 Project Requirements
 
-### `npm run build`
+Before you begin, ensure you have the following set up on your local machine:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-   **Node.js** (v16 or later is recommended) and **npm**.
+-   A running instance of the corresponding backend API. This frontend is designed to communicate with a backend service. By default, it expects the API to be available at `http://localhost:8080`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📦 Dependencies
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This project leans on several powerful libraries to deliver its features. Here are some of the key players:
 
-### `npm run eject`
+-   **`react-router-dom`**: For handling all client-side routing and navigation.
+-   **`axios`**: To make promise-based HTTP requests to the backend API.
+-   **`jwt-decode`**: A small library to decode JWTs and extract user information from the token payload.
+-   **`react-select`**: For a user-friendly and customizable select dropdown component, used in product filtering.
+-   **`react-bootstrap`**: Provides pre-built form components for a consistent UI, used on the 'Add Product' page.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+First, you need to install all the necessary project dependencies. Navigate to the project's root directory in your terminal and run the following command:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This command will download all the required libraries from `package.json` and set up your `node_modules` folder, getting you ready for the next step.
 
-## Learn More
+## ▶️ How to run the application
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To start the application in development mode, simply run the command below from the project's root directory:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
+```
 
-### Code Splitting
+This will launch the app and automatically open it in your default web browser, typically at `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Hot-reloading is enabled, so any changes you make to the source code will be reflected in the browser instantly! Just remember, for the application to work fully (including login, fetching products, and placing orders), the backend server **must be running on `http://localhost:8080`**.
 
-### Analyzing the Bundle Size
+## ✨ Relevant Code Examples
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+This project showcases several modern React development patterns. Here are a few highlights to help you understand the architecture.
 
-### Making a Progressive Web App
+### Protected Routes for Secure Navigation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+We use a component-based approach to protect routes, ensuring only authorized users can access certain pages. The `ProtectedRoute` component acts as a gatekeeper for standard logged-in users.
 
-### Advanced Configuration
+```javascript
+// src/components/ProtectedRoute.js
+const ProtectedRoute = ({children}) => {
+    const {token} = useAuth();
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    // If there is no token, redirect to the login page
+    if (!token){
+        return <Navigate to="/login" />;
+    }
+    // Otherwise, render the requested component
+    return children;
+};
+```
 
-### Deployment
+For routes that require administrator privileges, the `AdminRoute` adds an extra layer of validation by checking the user's role, which is decoded from the JWT.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```javascript
+// src/components/AdminRoute.js
+const AdminRoute = ({children}) => {
+    const {user, token} = useAuth();
 
-### `npm run build` fails to minify
+    if(!token){
+        return <Navigate to="/login" />;
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    // Also check if the user has the 'ROLE_ADMIN' role
+    if(user && user.role !== 'ROLE_ADMIN'){
+        return <Navigate to="/" />;
+    }
+
+    return children;
+};
+```
+
+Implementing these is clean and declarative within our main router setup in `App.js`. This keeps our routing logic easy to read and maintain.
+
+```javascript
+// src/App.js
+
+// A route available to any logged-in user
+<Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
+/>
+
+// A route available ONLY to admin users
+<Route
+  path="/products"
+  element={
+    <AdminRoute>
+      <AddProduct />
+    </AdminRoute>
+  }
+/>
+```
+
+### Centralized State with Context API
+
+To manage application-wide state like user authentication, shopping cart items, and order status, we use React's Context API. The `AuthContext` provides a global "announcement system" that components can subscribe to for user data and login/logout functions.
+
+```javascript
+// src/context/AuthContext.js
+
+export const AuthProvider = ({children}) =>{
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(() => localStorage.getItem('token'));
+
+    const login = (newToken) => {
+        const decodedUser = jwtDecode(newToken);
+        localStorage.setItem('token', newToken);
+        setUser(decodedUser);
+        setToken(newToken);
+    };
+
+    const logout = () => {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('token');
+    };
+
+    // ...
+};
+
+// Custom hook for easy consumption
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
+```
+
+This pattern allows any component, like our `Navbar`, to easily access the user's authentication status without the complexity of passing props down through many levels.
+
+### Effortless API Requests with Axios Interceptors
+
+Manually adding the authentication token to every API request would be repetitive and error-prone. We solve this elegantly with an Axios interceptor. This helper automatically attaches the JWT to the `Authorization` header of every outgoing request.
+
+```javascript
+// src/api/axiosClient.js
+const axiosClient = axios.create({
+    baseURL: 'http://localhost:8080/',
+});
+
+// The interceptor function runs before each request is sent
+axiosClient.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+
+    // If a token exists, add it to the request headers
+    if (token){
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+export default axiosClient;
+```
+
+Now, whenever we need to make an authenticated API call, we just use our custom `axiosClient` instance, and the token is handled for us behind the scenes!
+
+## 👋 Conclusion
+
+The Easy Shop Frontend is a comprehensive example of building a real-world React application. It demonstrates key patterns for routing, state management, and API communication that are essential for modern web development.
+
+Feel free to explore the code, fork the repository, and adapt it for your own needs. We hope you find it educational and useful.
